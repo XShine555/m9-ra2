@@ -14,6 +14,7 @@ public class BanyUnisex {
     private ReentrantLock lockEstat = new ReentrantLock(true);
 
     public void entraHome() throws InterruptedException {
+        System.out.println("Home vol entrar al bany");
         capacitat.acquire();
 
         lockEstat.lock();
@@ -34,6 +35,7 @@ public class BanyUnisex {
     }
 
     public void entraDona() throws InterruptedException {
+        System.out.println("Dona vol entrar al bany");
         capacitat.acquire();
 
         lockEstat.lock();
@@ -59,8 +61,10 @@ public class BanyUnisex {
             ocupants--;
             System.out.format("Home surt del bany. Ocupants: %s%n", ocupants);
 
-            if (ocupants == 0)
+            if (ocupants == 0) {
                 estatActual = BANY_BUIT;
+                System.out.println("El bany està buit.");
+            }
 
         } finally {
             lockEstat.unlock();
@@ -75,8 +79,10 @@ public class BanyUnisex {
             ocupants--;
             System.out.format("Dona surt del bany. Ocupants: %s%n", ocupants);
 
-            if (ocupants == 0)
+            if (ocupants == 0) {
                 estatActual = BANY_BUIT;
+                System.out.println("El bany està buit.");
+            }
 
         } finally {
             lockEstat.unlock();
@@ -88,8 +94,8 @@ public class BanyUnisex {
     public static void main(String[] args) {
         BanyUnisex bany = new BanyUnisex();
         for (int i = 0; i < 5; i++) {
-            new Home("Home" + i, bany).start();
-            new Dona("Dona" + i, bany).start();
+            new Home("Home-" + i, bany).start();
+            new Dona("Dona-" + i, bany).start();
         }
     }
 }
